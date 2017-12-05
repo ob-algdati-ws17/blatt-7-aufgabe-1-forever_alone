@@ -10,6 +10,6 @@ compiler:
 script:
   - mkdir build
   - cd build
-  - cmake
+  - cmake ..
   - make
   - make test
