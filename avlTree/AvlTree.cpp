@@ -1,12 +1,21 @@
 #include "AvlTree.h"
 
+#define BALANCE_MINUS_1 -1
+#define BALANCE_0 0
+#define BALANCE_PLUS_1 1
+
 using namespace std;
+
 
 void print(int key, int balance){
     cout << "Added node: " << key << " with balance " << balance <<endl;
 }
 
 AvlTree::Node::Node(const int k): key(k), balance(0), left(nullptr), right(nullptr), parent(nullptr)  {
+    print(key, balance);
+}
+
+AvlTree::Node::Node(const int k, Node *parentN): key(k), balance(0), left(nullptr), right(nullptr), parent(parentN)  {
     print(key, balance);
 }
 
@@ -29,7 +38,7 @@ AvlTree::~AvlTree() {
     delete root;
 }
 
-const int AvlTree::getRootBalance() const { // TODO for testing
+const int AvlTree::getRootBalance() const {
     return root->balance;
 }
 
@@ -72,32 +81,102 @@ void AvlTree::insert(const int key) {
     }
 }
 
+
+
 void AvlTree::doInsert(Node * node, const int key) {
     if(node->key == key){
         cout << "Key " << key << " exist." << endl;
 
     } else {
-
         if(key < node->key){
             if(node->left != nullptr){
                 doInsert(node->left,key);
-            } else {
-                node->left = new Node(key);
 
-                // TODO
+            } else {
+                node->left = new Node(key, node);
+
+                // TODO remove copyPaste from upin()
+                if(node->balance == BALANCE_PLUS_1){
+                    node->balance = BALANCE_0;
+                } else if(node->balance == BALANCE_0){
+                    node->balance = BALANCE_MINUS_1;
+                    upin(node);
+
+                } else { // BALANCE_MINUS_1
+                    // TODO rotate
+                    if(node->left->balance == BALANCE_MINUS_1){
+                        //rotateRigth(node);
+                    } else if (node->left->balance == BALANCE_PLUS_1){
+                        //rotateLeft(node);
+                        //rotateRigth(node);
+                    }
+                }
             }
+
         } else {
             if(node->right != nullptr){
                 doInsert(node->right,key);
-            } else {
-                node->right = new Node(key);
 
-                // TODO
+            } else {
+                node->right = new Node(key, node);
+
+                if(node->balance == BALANCE_MINUS_1){
+                    node->balance = BALANCE_0;
+                } else if(node->balance == BALANCE_0){
+                    node->balance = BALANCE_PLUS_1;
+                    upin(node);
+
+                } else {// BALANCE_PLUS_1
+                    // TODO rotate
+                    if(node->right->balance == BALANCE_PLUS_1){
+                        //rotateLeft(node);
+                    } else if (node->right->balance == BALANCE_PLUS_1){
+                        //rotateRight(node);
+                        //rotateLeft(node);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void AvlTree::upin(Node *node) {
+    if(node == root){
+        return;
+    }
+
+    if(node->parent->left == node){
+        if(node->parent->balance == BALANCE_PLUS_1){
+            node->parent->balance = BALANCE_0;
+        } else if(node->parent->balance == BALANCE_0){
+            node->parent->balance = BALANCE_MINUS_1;
+            upin(node->parent);
+        } else {
+
+            if(node->balance == BALANCE_MINUS_1){
+                //rotateRigth(node);
+            } else if (node->balance == BALANCE_PLUS_1){
+                //rotateLeft(node);
+                //rotateRigth(node);
             }
         }
 
+    } else {
 
+        if(node->parent->balance == BALANCE_MINUS_1){
+            node->parent->balance = BALANCE_0;
+        } else if(node->parent->balance == BALANCE_0){
+            node->parent->balance = BALANCE_PLUS_1;
+            upin(node->parent);
+        } else {
 
+            if(node->balance == BALANCE_PLUS_1){
+                //rotateLeft(node);
+            } else if (node->balance == BALANCE_PLUS_1){
+                //rotateRight(node);
+                //rotateLeft(node);
+            }
+        }
     }
 }
 

@@ -17,8 +17,9 @@ private:
         Node *right = nullptr;
         Node *parent = nullptr; // TODO
         Node(const int);
-        Node(const int, int, Node *, Node *);
-        Node(const int, int, Node *, Node *, Node *);
+        Node(const int, Node * parent);
+        Node(const int, int balance, Node *left, Node *right);
+        Node(const int, int balance, Node *left, Node *right, Node *parent);
         ~Node();
         vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
@@ -28,6 +29,7 @@ private:
     Node *root = nullptr;
 
     void doInsert(Node *, const int);
+    void upin(Node* node);
     bool doSearch(Node *, const int) const;
 public:
 
