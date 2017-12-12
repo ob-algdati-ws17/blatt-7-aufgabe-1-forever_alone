@@ -107,8 +107,9 @@ void AvlTree::doInsert(Node * node, const int key) {
                     if(node->left->balance == BALANCE_MINUS_1){
                         rotateRight(node);
                     } else if (node->left->balance == BALANCE_PLUS_1){
-                        //rotateLeft(node);
-                        //rotateRigth(node);
+                        Node *parentBeforeRotation = node->parent;
+                        rotateLeft(node);
+                        rotateRight(parentBeforeRotation);
                     }
                 }
             }
@@ -129,10 +130,11 @@ void AvlTree::doInsert(Node * node, const int key) {
                 } else {// BALANCE_PLUS_1
                     // TODO rotate
                     if(node->right->balance == BALANCE_PLUS_1){
-                        //rotateLeft(node);
+                        rotateLeft(node);
                     } else if (node->right->balance == BALANCE_PLUS_1){
-                        //rotateRight(node);
-                        //rotateLeft(node);
+                        Node *parentBeforeRotation = node->parent;
+                        rotateRight(node);
+                        rotateLeft(parentBeforeRotation);
                     }
                 }
             }
@@ -156,8 +158,9 @@ void AvlTree::upin(Node *node) {
             if(node->balance == BALANCE_MINUS_1){
                 rotateRight(node->parent);
             } else if (node->balance == BALANCE_PLUS_1){
-                //rotateLeft(node);
-                //rotateRigth(node);
+                Node *parentBeforeRotation = node->parent;
+                rotateLeft(node);
+                rotateRight(parentBeforeRotation);
             }
         }
 
@@ -171,10 +174,11 @@ void AvlTree::upin(Node *node) {
         } else {
 
             if(node->balance == BALANCE_PLUS_1){
-                //rotateLeft(node);
+                rotateLeft(node->parent);
             } else if (node->balance == BALANCE_PLUS_1){
-                //rotateRight(node);
-                //rotateLeft(node);
+                Node *parentBeforeRotation = node->parent;
+                rotateRight(node);
+                rotateLeft(parentBeforeRotation);
             }
         }
     }
@@ -201,11 +205,32 @@ void AvlTree::rotateRight(Node *node) {
     node->balance = BALANCE_0;
     node->left = leftRightChild;
     node->parent = leftChild;
-    leftRightChild->parent = node;
+    if(leftRightChild)
+        leftRightChild->parent = node;
 }
 
 void AvlTree::rotateLeft(Node *node) {
+    Node* parent = node->parent;
+    Node* rightChild = node->right;
+    Node* rightLeftChild = rightChild->left;
 
+    if (!parent){
+        root = rightChild;
+    } else if(parent->right == node){
+        parent->right = rightChild;
+    } else {
+        parent->left = rightChild;
+    }
+
+    rightChild->balance = BALANCE_0;
+    rightChild->parent = parent;
+    rightChild->left = node;
+
+    node->balance = BALANCE_0;
+    node->right = rightLeftChild;
+    node->parent = rightChild;
+    if(rightLeftChild)
+        rightLeftChild->parent = node;
 }
 
 
@@ -292,4 +317,3 @@ vector<int> *AvlTree::Node::postorder() const {
     vec->push_back(key);
     return vec;
 }
-
