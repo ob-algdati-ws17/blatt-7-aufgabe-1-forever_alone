@@ -153,7 +153,7 @@ void AvlTree::upin(Node *node) {
 
             if(node->balance == BALANCE_PLUS_1){
                 rotateLeft(node->parent);
-            } else if (node->balance == BALANCE_PLUS_1){ // TODO:  BALANCE_0 passible?
+            } else if (node->balance == BALANCE_MINUS_1){ // TODO:  BALANCE_0 passible?
                 Node *parentBeforeRotation = node->parent;
                 rotateRight(node);
                 rotateLeft(parentBeforeRotation);
