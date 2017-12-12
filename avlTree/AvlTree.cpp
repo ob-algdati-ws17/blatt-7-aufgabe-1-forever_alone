@@ -105,7 +105,7 @@ void AvlTree::doInsert(Node * node, const int key) {
                 } else { // BALANCE_MINUS_1
                     // TODO rotate
                     if(node->left->balance == BALANCE_MINUS_1){
-                        //rotateRigth(node);
+                        //rotateRight(node);
                     } else if (node->left->balance == BALANCE_PLUS_1){
                         //rotateLeft(node);
                         //rotateRigth(node);
@@ -154,7 +154,7 @@ void AvlTree::upin(Node *node) {
         } else {
 
             if(node->balance == BALANCE_MINUS_1){
-                //rotateRigth(node);
+                //rotateRight(node->parent);
             } else if (node->balance == BALANCE_PLUS_1){
                 //rotateLeft(node);
                 //rotateRigth(node);
@@ -179,6 +179,27 @@ void AvlTree::upin(Node *node) {
         }
     }
 }
+
+
+void AvlTree::rotateRight(Node *node) {
+
+}
+
+void AvlTree::rotateLeft(Node *node) {
+
+}
+
+
+
+/********************************************************************
+ * Remove
+ *******************************************************************/
+
+void AvlTree::remove(const int key) {
+
+
+}
+
 
 /********************************************************************
  * Traversal

@@ -31,6 +31,9 @@ private:
     void doInsert(Node *, const int);
     void upin(Node* node);
     bool doSearch(Node *, const int) const;
+
+    void rotateRight(Node*);
+    void rotateLeft(Node*);
 public:
 
     ~AvlTree();
