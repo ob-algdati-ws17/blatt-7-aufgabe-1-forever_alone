@@ -30,6 +30,10 @@ private:
 
     void doInsert(Node *, const int);
     void upin(Node* node);
+
+    void doRemove(Node *, const int);
+    void upout(Node* node);
+
     bool doSearch(Node *, const int) const;
 
     void rotateRight(Node*);

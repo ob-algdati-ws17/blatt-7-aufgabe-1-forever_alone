@@ -218,6 +218,21 @@ void AvlTree::rotateLeft(Node *node) {
  *******************************************************************/
 
 void AvlTree::remove(const int key) {
+    if(root == nullptr){
+        return;
+    } else {
+        doRemove(root, key);
+    }
+}
+
+
+void AvlTree::doRemove(Node *node, const int key) {
+
+
+}
+
+
+void AvlTree::upout(Node *node) {
 
 
 }
