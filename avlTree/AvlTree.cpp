@@ -1,4 +1,5 @@
 #include "AvlTree.h"
+#include <functional>
 
 #define BALANCE_MINUS_1 -1
 #define BALANCE_0 0
@@ -316,4 +317,38 @@ vector<int> *AvlTree::Node::postorder() const {
     // Wurzel in vec
     vec->push_back(key);
     return vec;
+}
+
+
+/********************************************************************
+ * operator<<
+ *******************************************************************/
+std::ostream &operator<<(std::ostream &os, const AvlTree &tree) {
+    function<void(std::ostream &, const int, const AvlTree::Node *, const string)> printToOs
+            = [&](std::ostream &os, const int value, const AvlTree::Node *node, const string l) {
+
+                static int nullcount = 0;
+
+                if (node == nullptr) {
+                    os << "    null" << nullcount << "[shape=point];" << endl;
+                    os << "    " << value << " -> null" << nullcount
+                       << " [label=\"" << l << "\"];" << endl;
+                    nullcount++;
+                } else {
+                    os << "    " << value << " -> " << node->key
+                       << " [label=\"" << l << "\"];" << endl;
+
+                    printToOs(os, node->key, node->left, "l");
+                    printToOs(os, node->key, node->right, "r");
+                }
+            };
+    os << "digraph tree {" << endl;
+    if (tree.root == nullptr) {
+        os << "    null " << "[shape=point];" << endl;
+    } else {
+        printToOs(os, tree.root->key, tree.root->left, "l");
+        printToOs(os, tree.root->key, tree.root->right, "r");
+    }
+    os << "}" << endl;
+    return os;
 }
