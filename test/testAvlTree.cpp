@@ -68,20 +68,36 @@ TEST(AvlTreeTest, Two_Nodes) {
 
 TEST(AvlTreeTest, Three_Nodes) {
     AvlTree b;
-    b.insert(12213);
-    b.insert(215);
-    b.insert(123712);
-    EXPECT_TRUE(b.search(12213));
-    EXPECT_TRUE(b.search(123712));
-    EXPECT_TRUE(b.search(215));
-    EXPECT_THAT(*b.preorder(), testing::ElementsAre(12213, 215, 123712));
-    EXPECT_THAT(*b.inorder(), testing::ElementsAre(215, 12213, 123712));
-    EXPECT_THAT(*b.postorder(), testing::ElementsAre(215, 123712, 12213));
+    b.insert(2);
+    b.insert(1);
+    b.insert(3);
+    EXPECT_TRUE(b.search(2));
+    EXPECT_TRUE(b.search(3));
+    EXPECT_TRUE(b.search(1));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(2, 1, 3));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(1, 2, 3));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(1, 3, 2));
 }
 
-// insert, remove and search
+TEST(AvlTreeTest, RotateRight_3_Nodes) {
+    AvlTree b;
+    b.insert(5);
+    b.insert(4);
+    b.insert(3);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(4, 3, 5));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(3, 4, 5));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(3, 5, 4));
+}
 
-
-
-
-
+TEST(AvlTreeTest, RotateRight_6_Nodes) {
+    AvlTree b;
+    b.insert(5);
+    b.insert(10);
+    b.insert(3);
+    b.insert(1);
+    b.insert(4);
+    b.insert(2);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(3, 1, 2, 5,4,10));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(1, 2, 3,4,5,10));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(2, 1, 4,10,5,3));
+}
