@@ -101,3 +101,40 @@ TEST(AvlTreeTest, RotateRight_6_Nodes) {
     EXPECT_THAT(*b.inorder(), testing::ElementsAre(1, 2, 3,4,5,10));
     EXPECT_THAT(*b.postorder(), testing::ElementsAre(2, 1, 4,10,5,3));
 }
+
+TEST(AvlTreeTest, RotateLeft_3_Nodes) {
+    AvlTree b;
+    b.insert(3);
+    b.insert(4);
+    b.insert(5);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(4, 3, 5));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(3, 4, 5));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(3, 5, 4));
+}
+
+TEST(AvlTreeTest, RotateLeft_6_Nodes_1) {
+    AvlTree b;
+    b.insert(12);
+    b.insert(25);
+    b.insert(10);
+    b.insert(30);
+    b.insert(15);
+    b.insert(28);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(25, 12, 10, 15,30,28));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(10, 12, 15,25,28,30));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(10, 15, 12,28,30,25));
+}
+
+TEST(AvlTreeTest, RotateLeft_6_Nodes_2) {
+    AvlTree b;
+    b.insert(50);
+    b.insert(25);
+    b.insert(75);
+    b.insert(10);
+    b.insert(40);
+    b.insert(30);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(40, 25, 10, 30, 50, 75));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(10, 25, 30,40,50,75));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(10, 30, 25,75,50,40));
+}
+
