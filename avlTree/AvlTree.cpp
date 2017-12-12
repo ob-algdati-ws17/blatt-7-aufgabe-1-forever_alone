@@ -95,23 +95,11 @@ void AvlTree::doInsert(Node * node, const int key) {
 
             } else {
                 node->left = new Node(key, node);
-
-                // TODO remove copyPaste from upin()
                 if(node->balance == BALANCE_PLUS_1){
                     node->balance = BALANCE_0;
-                } else if(node->balance == BALANCE_0){
+                } else{
                     node->balance = BALANCE_MINUS_1;
                     upin(node);
-
-                } else { // BALANCE_MINUS_1
-                    // TODO rotate
-                    if(node->left->balance == BALANCE_MINUS_1){
-                        rotateRight(node);
-                    } else if (node->left->balance == BALANCE_PLUS_1){
-                        Node *parentBeforeRotation = node->parent;
-                        rotateLeft(node);
-                        rotateRight(parentBeforeRotation);
-                    }
                 }
             }
 
@@ -121,22 +109,11 @@ void AvlTree::doInsert(Node * node, const int key) {
 
             } else {
                 node->right = new Node(key, node);
-
                 if(node->balance == BALANCE_MINUS_1){
                     node->balance = BALANCE_0;
-                } else if(node->balance == BALANCE_0){
+                } else {
                     node->balance = BALANCE_PLUS_1;
                     upin(node);
-
-                } else {// BALANCE_PLUS_1
-                    // TODO rotate
-                    if(node->right->balance == BALANCE_PLUS_1){
-                        rotateLeft(node);
-                    } else if (node->right->balance == BALANCE_PLUS_1){
-                        Node *parentBeforeRotation = node->parent;
-                        rotateRight(node);
-                        rotateLeft(parentBeforeRotation);
-                    }
                 }
             }
         }
@@ -158,7 +135,7 @@ void AvlTree::upin(Node *node) {
 
             if(node->balance == BALANCE_MINUS_1){
                 rotateRight(node->parent);
-            } else if (node->balance == BALANCE_PLUS_1){
+            } else if (node->balance == BALANCE_PLUS_1){    // TODO:  BALANCE_0 passible?
                 Node *parentBeforeRotation = node->parent;
                 rotateLeft(node);
                 rotateRight(parentBeforeRotation);
@@ -176,7 +153,7 @@ void AvlTree::upin(Node *node) {
 
             if(node->balance == BALANCE_PLUS_1){
                 rotateLeft(node->parent);
-            } else if (node->balance == BALANCE_PLUS_1){
+            } else if (node->balance == BALANCE_PLUS_1){ // TODO:  BALANCE_0 passible?
                 Node *parentBeforeRotation = node->parent;
                 rotateRight(node);
                 rotateLeft(parentBeforeRotation);
