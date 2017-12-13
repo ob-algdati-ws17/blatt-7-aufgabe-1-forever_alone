@@ -34,19 +34,19 @@ bool AvlTree::search(const int key) const {
         cout << "Tree is empty" << endl;
         return false;
     } else {
-        return doSearch(root,key);
+        return (doSearch(root,key) != nullptr);
     }
 }
 
-bool AvlTree::doSearch(Node * node, const int key) const {
+AvlTree::Node* AvlTree::doSearch(Node * node, const int key) const {
     if(node == nullptr){
-        return false;
+        return node;
     } if(key < node->key){
         return doSearch(node->left,key);
     } else if(key > node->key ){
         return doSearch(node->right,key);
     } else {
-        return true;
+        return node;
     }
 }
 

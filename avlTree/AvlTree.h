@@ -32,7 +32,7 @@ private:
     void doRemove(Node *, const int);
     void upout(Node* node);
 
-    bool doSearch(Node *, const int) const;
+    Node* doSearch(Node *, const int) const;
 
     void rotateRight(Node*);
     void rotateLeft(Node*);
