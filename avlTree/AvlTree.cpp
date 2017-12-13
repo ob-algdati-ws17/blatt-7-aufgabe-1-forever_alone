@@ -1,33 +1,19 @@
 #include "AvlTree.h"
 #include <functional>
 
-#define BALANCE_MINUS_1 -1
+#define BALANCE_MINUS_1 (-1)
 #define BALANCE_0 0
 #define BALANCE_PLUS_1 1
 
 using namespace std;
 
-
-void print(int key, int balance){
-    cout << "Added node: " << key << " with balance " << balance <<endl;
-}
-
 AvlTree::Node::Node(const int k): key(k), balance(0), left(nullptr), right(nullptr), parent(nullptr)  {
-    print(key, balance);
+    cout << "Added node: " << key <<endl;
 }
 
 AvlTree::Node::Node(const int k, Node *parentN): key(k), balance(0), left(nullptr), right(nullptr), parent(parentN)  {
-    print(key, balance);
+    cout << "Added node: " << key <<endl;
 }
-
-AvlTree::Node::Node(const int k, int balanceN, Node *leftN, Node *rightN): key(k), balance(balanceN), left(leftN), right(rightN), parent(nullptr)  {
-    print(key, balance);
-};
-
-AvlTree::Node::Node(const int k, int balanceN, Node *leftN, Node *rightN, Node *parentN): key(k), balance(balanceN), left(leftN), right(rightN), parent(parentN) {
-    print(key, balance);
-};
-
 
 AvlTree::Node::~Node() {
     cout << "Deleted node: " << key << endl;
@@ -38,11 +24,6 @@ AvlTree::Node::~Node() {
 AvlTree::~AvlTree() {
     delete root;
 }
-
-const int AvlTree::getRootBalance() const {
-    return root->balance;
-}
-
 
 /********************************************************************
  * Search
@@ -69,7 +50,6 @@ bool AvlTree::doSearch(Node * node, const int key) const {
     }
 }
 
-
 /********************************************************************
  * Insert
  *******************************************************************/
@@ -82,81 +62,75 @@ void AvlTree::insert(const int key) {
     }
 }
 
-
-
 void AvlTree::doInsert(Node * node, const int key) {
     if(node->key == key){
         cout << "Key " << key << " exist." << endl;
+        return;
+    }
 
-    } else {
-        if(key < node->key){
-            if(node->left != nullptr){
-                doInsert(node->left,key);
-
-            } else {
-                node->left = new Node(key, node);
-                if(node->balance == BALANCE_PLUS_1){
-                    node->balance = BALANCE_0;
-                } else{
-                    node->balance = BALANCE_MINUS_1;
-                    upin(node);
-                }
-            }
+    if(key < node->key){
+        if(node->left != nullptr){
+            doInsert(node->left,key);
 
         } else {
-            if(node->right != nullptr){
-                doInsert(node->right,key);
+            node->left = new Node(key, node);
+            if(node->balance == BALANCE_PLUS_1){
+                node->balance = BALANCE_0;
+            } else{
+                node->balance = BALANCE_MINUS_1;
+                upin(node);
+            }
+        }
 
+    } else {
+        if(node->right != nullptr){
+            doInsert(node->right,key);
+
+        } else {
+            node->right = new Node(key, node);
+            if(node->balance == BALANCE_MINUS_1){
+                node->balance = BALANCE_0;
             } else {
-                node->right = new Node(key, node);
-                if(node->balance == BALANCE_MINUS_1){
-                    node->balance = BALANCE_0;
-                } else {
-                    node->balance = BALANCE_PLUS_1;
-                    upin(node);
-                }
+                node->balance = BALANCE_PLUS_1;
+                upin(node);
             }
         }
     }
 }
 
 void AvlTree::upin(Node *node) {
-    if(node == root){
-        return;
-    }
+    if(node == root) return;
+    Node* parent = node->parent;
 
-    if(node->parent->left == node){
-        if(node->parent->balance == BALANCE_PLUS_1){
-            node->parent->balance = BALANCE_0;
-        } else if(node->parent->balance == BALANCE_0){
-            node->parent->balance = BALANCE_MINUS_1;
-            upin(node->parent);
+    if(parent->left == node){
+
+        if(parent->balance == BALANCE_PLUS_1){
+            parent->balance = BALANCE_0;
+        } else if(parent->balance == BALANCE_0){
+            parent->balance = BALANCE_MINUS_1;
+            upin(parent);
         } else {
-
             if(node->balance == BALANCE_MINUS_1){
-                rotateRight(node->parent);
-            } else if (node->balance == BALANCE_PLUS_1){    // TODO:  BALANCE_0 passible?
-                Node *parentBeforeRotation = node->parent;
+                rotateRight(parent);
+            } else {
                 rotateLeft(node);
-                rotateRight(parentBeforeRotation);
+                rotateRight(parent);
             }
         }
 
     } else {
 
-        if(node->parent->balance == BALANCE_MINUS_1){
-            node->parent->balance = BALANCE_0;
-        } else if(node->parent->balance == BALANCE_0){
-            node->parent->balance = BALANCE_PLUS_1;
-            upin(node->parent);
+        if(parent->balance == BALANCE_MINUS_1){
+            parent->balance = BALANCE_0;
+        } else if(parent->balance == BALANCE_0){
+            parent->balance = BALANCE_PLUS_1;
+            upin(parent);
         } else {
-
             if(node->balance == BALANCE_PLUS_1){
-                rotateLeft(node->parent);
-            } else if (node->balance == BALANCE_MINUS_1){ // TODO:  BALANCE_0 passible?
-                Node *parentBeforeRotation = node->parent;
+                rotateLeft(parent);
+            } else{
                 rotateRight(node);
-                rotateLeft(parentBeforeRotation);
+                rotateLeft(parent);
             }
         }
     }
@@ -211,8 +185,6 @@ void AvlTree::rotateLeft(Node *node) {
         rightLeftChild->parent = node;
 }
 
-
-
 /********************************************************************
  * Remove
  *******************************************************************/
@@ -236,7 +208,6 @@ void AvlTree::upout(Node *node) {
 
 
 }
-
 
 /********************************************************************
  * Traversal
@@ -310,7 +281,6 @@ vector<int> *AvlTree::Node::postorder() const {
     vec->push_back(key);
     return vec;
 }
-
 
 /********************************************************************
  * operator<<

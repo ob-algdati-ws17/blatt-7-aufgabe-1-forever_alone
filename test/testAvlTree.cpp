@@ -1,17 +1,8 @@
 #include "testAvlTree.h"
-#include <memory>
 
 using namespace std;
 
 // empty tree
-
-TEST(AvlTreeTest, Test_EmptyTree) {
-
-    string test = "first test";
-
-    EXPECT_TRUE(test == "first test");
-}
-
 
 TEST(AvlTreeTest, Empty_Tree) {
     AvlTree b;
@@ -36,7 +27,6 @@ TEST(AvlTreeTest, Insert_Five_Nodes) {
     EXPECT_TRUE(b.search(5));
     EXPECT_TRUE(b.search(0));
     EXPECT_FALSE(b.search(7));
-    EXPECT_EQ(0, b.getRootBalance());
 
     EXPECT_THAT(*b.preorder(), testing::ElementsAre(3,2,0,5,4));
     EXPECT_THAT(*b.inorder(), testing::ElementsAre(0,2,3,4,5));

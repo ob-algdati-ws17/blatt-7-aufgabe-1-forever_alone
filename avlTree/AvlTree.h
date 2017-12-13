@@ -15,11 +15,9 @@ private:
         int balance;
         Node *left = nullptr;
         Node *right = nullptr;
-        Node *parent = nullptr; // TODO
+        Node *parent = nullptr;
         Node(const int);
         Node(const int, Node * parent);
-        Node(const int, int balance, Node *left, Node *right);
-        Node(const int, int balance, Node *left, Node *right, Node *parent);
         ~Node();
         vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
@@ -39,10 +37,7 @@ private:
     void rotateRight(Node*);
     void rotateLeft(Node*);
 public:
-
     ~AvlTree();
-
-    const int getRootBalance() const; // for testing
 
     bool search(const int) const;
     void insert(const int);
