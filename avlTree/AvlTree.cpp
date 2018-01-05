@@ -352,6 +352,13 @@ void AvlTree::upout(Node *node) {
     }
 }
 
+
+
+AvlTree::Node* AvlTree::getSuccessor(Node* node){
+    // TODO
+    return node;
+}
+
 /********************************************************************
  * Traversal
  *******************************************************************/

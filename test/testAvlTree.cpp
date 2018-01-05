@@ -253,7 +253,6 @@ TEST(AvlTreeTest, Remove_Node_With_Left_Child___Without_Rotation) {
     EXPECT_THAT(*b.postorder(), testing::ElementsAre(10,40,30));
 }
 
-
 TEST(AvlTreeTest, Remove_Node_With_Left_Child___Rotate_Left) {
     AvlTree b;
     b.insert(20);
@@ -267,6 +266,21 @@ TEST(AvlTreeTest, Remove_Node_With_Left_Child___Rotate_Left) {
     EXPECT_THAT(*b.preorder(), testing::ElementsAre(30,20,40));
     EXPECT_THAT(*b.inorder(), testing::ElementsAre(20,30,40));
     EXPECT_THAT(*b.postorder(), testing::ElementsAre(20,40,30));
+}
+
+TEST(AvlTreeTest, Remove_Node_With_Left_Child___Rotate_Left_Right) {
+    AvlTree b;
+    b.insert(30);
+    b.insert(10);
+    b.insert(40);
+    b.insert(20);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(30,10,20,40));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(10,20,30,40));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(20,10,40,30));
+    b.remove(40);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(20,10,30));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(10,20,30));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(10,30,20));
 }
 
 // remove node with one child - right child
@@ -300,3 +314,21 @@ TEST(AvlTreeTest, Remove_Node_With_Right_Child___Rotate_Right) {
     EXPECT_THAT(*b.inorder(), testing::ElementsAre(0,10,20));
     EXPECT_THAT(*b.postorder(), testing::ElementsAre(0,20,10));
 }
+
+TEST(AvlTreeTest, Remove_Node_With_Right_Child___Rotate_Right_Left) {
+    AvlTree b;
+    b.insert(30);
+    b.insert(10);
+    b.insert(40);
+    b.insert(35);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(30,10,40,35));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(10,30,35,40));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(10,35,40,30));
+    b.remove(10);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(35,30,40));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(30,35,40));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(30,40,35));
+}
+
+// remove node with two children
+

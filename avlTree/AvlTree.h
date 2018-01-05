@@ -35,6 +35,7 @@ private:
     void doRemoveNodeWithRightChild(Node *);
     void doRemoveNodeWithTwoChildren(Node *);
     void upout(Node*);
+    Node* getSuccessor(Node*);
 
     Node* doSearch(Node *, const int) const;
 
