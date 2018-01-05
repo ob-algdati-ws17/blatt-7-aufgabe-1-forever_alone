@@ -193,17 +193,33 @@ void AvlTree::rotateLeft(Node *node) {
  *******************************************************************/
 
 bool AvlTree::remove(const int key) {
-    if(root == nullptr){
+    Node *node = doSearch(root, key);
+    if(node == nullptr){
+        cout << "Key " << key << " do not exist." << endl;
         return false;
+    }
+    // 0. case -> I am the lonely root...
+    if( !node->parent && !node->left && !node->right ){
+        delete(node);
+        root = nullptr;
     } else {
-        doRemove(root, key);
+        doRemove(node);
     }
     return true;
 }
 
 
-void AvlTree::doRemove(Node *node, const int key) {
-    //TODO
+void AvlTree::doRemove(Node *node) {
+    Node *parent = node->parent;
+    if(!node->left && !node->right){
+        // 1. case -> node is leaf
+    } else if(node->right){
+        // 2. case -> node has only right child
+    } else if (node->left){
+        // 3. case -> node has only left child
+    } else {
+        // 4. case -> node has two children
+    }
 }
 
 

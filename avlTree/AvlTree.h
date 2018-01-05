@@ -29,7 +29,7 @@ private:
     bool doInsert(Node *, const int);
     void upin(Node*);
 
-    void doRemove(Node *, const int);
+    void doRemove(Node *);
     void upout(Node*);
 
     Node* doSearch(Node *, const int) const;
