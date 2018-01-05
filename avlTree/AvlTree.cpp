@@ -54,23 +54,25 @@ AvlTree::Node* AvlTree::doSearch(Node * node, const int key) const {
  * Insert
  *******************************************************************/
 
-void AvlTree::insert(const int key) {
+bool AvlTree::insert(const int key) {
     if(root == nullptr){
         root = new Node(key);
+        return true;
     } else {
-        doInsert(root, key);
+        return doInsert(root, key);
     }
+
 }
 
-void AvlTree::doInsert(Node * node, const int key) {
+bool AvlTree::doInsert(Node * node, const int key) {
     if(node->key == key){
         cout << "Key " << key << " exist." << endl;
-        return;
+        return false;
     }
 
     if(key < node->key){
         if(node->left != nullptr){
-            doInsert(node->left,key);
+            return doInsert(node->left,key);
 
         } else {
             node->left = new Node(key, node);
@@ -84,7 +86,7 @@ void AvlTree::doInsert(Node * node, const int key) {
 
     } else {
         if(node->right != nullptr){
-            doInsert(node->right,key);
+            return doInsert(node->right,key);
 
         } else {
             node->right = new Node(key, node);
@@ -96,6 +98,7 @@ void AvlTree::doInsert(Node * node, const int key) {
             }
         }
     }
+    return true;
 }
 
 void AvlTree::upin(Node *node) {
@@ -189,24 +192,23 @@ void AvlTree::rotateLeft(Node *node) {
  * Remove
  *******************************************************************/
 
-void AvlTree::remove(const int key) {
+bool AvlTree::remove(const int key) {
     if(root == nullptr){
-        return;
+        return false;
     } else {
         doRemove(root, key);
     }
+    return true;
 }
 
 
 void AvlTree::doRemove(Node *node, const int key) {
-
-
+    //TODO
 }
 
 
 void AvlTree::upout(Node *node) {
-
-
+    // TODO
 }
 
 /********************************************************************

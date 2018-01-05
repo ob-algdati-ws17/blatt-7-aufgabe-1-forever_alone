@@ -26,11 +26,11 @@ private:
 
     Node *root = nullptr;
 
-    void doInsert(Node *, const int);
-    void upin(Node* node);
+    bool doInsert(Node *, const int);
+    void upin(Node*);
 
     void doRemove(Node *, const int);
-    void upout(Node* node);
+    void upout(Node*);
 
     Node* doSearch(Node *, const int) const;
 
@@ -40,8 +40,8 @@ public:
     ~AvlTree();
 
     bool search(const int) const;
-    void insert(const int);
-    void remove(const int);
+    bool insert(const int);
+    bool remove(const int);
 
     vector<int> *preorder() const;  // (Hauptreihenfolge)
     vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
