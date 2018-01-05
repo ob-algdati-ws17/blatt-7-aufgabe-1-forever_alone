@@ -210,9 +210,9 @@ bool AvlTree::remove(const int key) {
 
 
 void AvlTree::doRemove(Node *node) {
-    Node *parent = node->parent;
     if(!node->left && !node->right){
         // 1. case -> node is leaf
+        doRemoveLeaf(node);
     } else if(node->right){
         // 2. case -> node has only right child
     } else if (node->left){
@@ -221,6 +221,56 @@ void AvlTree::doRemove(Node *node) {
         // 4. case -> node has two children
     }
 }
+
+void AvlTree::doRemoveLeaf(Node *node) {
+    Node *parent = node->parent;
+    if(parent->left == node){   // node is left child
+        parent->left = nullptr;
+        if(parent->balance == BALANCE_MINUS_1){
+            parent->balance = BALANCE_0;
+            upout(parent);
+        } else if(parent->balance == BALANCE_0){
+            parent->balance = BALANCE_PLUS_1;
+        } else { //BALANCE_PLUS_1
+            if(parent->right->balance == BALANCE_PLUS_1) {
+                rotateLeft(parent);
+            } else {
+                rotateRight(parent->right);
+                rotateLeft(parent);
+            }
+        }
+    } else {                    // node is right child
+        parent->right = nullptr;
+        if(parent->balance == BALANCE_PLUS_1){
+            parent->balance = BALANCE_0;
+            upout(parent);
+        } else if(parent->balance == BALANCE_0){
+            parent->balance = BALANCE_MINUS_1;
+        } else { //BALANCE_MINUS_1
+            if(parent->left->balance == BALANCE_MINUS_1){
+                rotateRight(parent);
+            } else{
+                rotateLeft(parent->left);
+                rotateRight(parent);
+            }
+        }
+    }
+    delete node;
+}
+
+
+void AvlTree::doRemoveNodeWithLeftChild(Node *node) {
+
+}
+
+void AvlTree::doRemoveNodeWithRightChild(Node *node) {
+
+}
+
+void AvlTree::doRemoveNodeWithTwoChildren(Node *) {
+
+}
+
 
 
 void AvlTree::upout(Node *node) {

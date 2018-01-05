@@ -30,6 +30,10 @@ private:
     void upin(Node*);
 
     void doRemove(Node *);
+    void doRemoveLeaf(Node *);
+    void doRemoveNodeWithLeftChild(Node *);
+    void doRemoveNodeWithRightChild(Node *);
+    void doRemoveNodeWithTwoChildren(Node *);
     void upout(Node*);
 
     Node* doSearch(Node *, const int) const;
