@@ -332,3 +332,59 @@ TEST(AvlTreeTest, Remove_Node_With_Right_Child___Rotate_Right_Left) {
 
 // remove node with two children
 
+TEST(AvlTreeTest, Remove_Node_With_Two_Children) {
+    AvlTree b;
+    b.insert(40);
+    b.insert(20);
+    b.insert(60);
+    b.insert(50);
+    b.insert(70);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(40,20,60,50,70));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(20,40,50,60,70));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(20,50,70,60,40));
+    b.remove(60);
+    EXPECT_FALSE(b.search(60));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(40,20,70,50));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(20,40,50,70));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(20,50,70,40));
+}
+
+TEST(AvlTreeTest, Remove_Node_With_Two_Children_2) {
+    AvlTree b;
+    b.insert(40);
+    b.insert(20);
+    b.insert(60);
+    b.insert(10);
+    b.insert(30);
+    b.insert(70);
+    b.insert(25);
+    b.insert(35);
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(40,20,10,30,25,35,60,70));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(10,20,25,30,35,40,60,70));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(10,25,35,30,20,70,60,40));
+    b.remove(20);
+    EXPECT_FALSE(b.search(20));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(40,25,10,30,35,60,70));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(10,25,30,35,40,60,70));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(10,35,30,25,70,60,40));
+}
+
+TEST(AvlTreeTest, Remove_Node_With_Two_Children_3) {
+    AvlTree b;
+    b.insert(40);
+    b.insert(20);
+    b.insert(60);
+    b.insert(10);
+    b.insert(30);
+    b.insert(70);
+    b.insert(25);
+    b.insert(35);
+    b.insert(58);
+    b.insert(75);
+    b.insert(27);
+    b.remove(20);
+    EXPECT_FALSE(b.search(20));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(40,25,10,30,27,35,60,58,70,75));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(10,25,27,30,35,40,58,60,70,75));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(10,27,35,30,25,58,75,70,60,40));
+}
