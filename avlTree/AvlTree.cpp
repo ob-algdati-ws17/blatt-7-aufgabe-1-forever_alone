@@ -224,6 +224,7 @@ void AvlTree::doRemove(Node *node) {
         doRemoveNodeWithLeftChild(node);
     } else {
         // 4. case -> node has two children
+        delete swap(node);
     }
 }
 
@@ -353,9 +354,47 @@ void AvlTree::upout(Node *node) {
 }
 
 
+AvlTree::Node* AvlTree::swap(Node* node){
+    auto successor = node->right;
+    while (successor->left != nullptr){
+        successor = successor->left;
+    }
+    int tmpBalance = successor->balance;
+    successor->balance = node->balance;
+    node->balance = tmpBalance;
 
-AvlTree::Node* AvlTree::getSuccessor(Node* node){
-    // TODO
+    auto nodeParent = node->parent;
+    auto successorParent = successor->parent;
+    auto nodeRight = node->right;
+
+    if(nodeParent){
+        if(nodeParent->left == node){
+            nodeParent->left = successor;
+        } else {
+            nodeParent->right = successor;
+        }
+        successor->parent = nodeParent;
+    } else {
+        root = successor;
+        // TODO successor = nullptr;
+    }
+
+    successor->left = node->left;
+    successor->left->parent = successor;
+
+    node->right = successor->right;
+    node->left = nullptr;
+    if(successorParent != node){
+        node->parent = successorParent;
+        successorParent->left = node;
+
+        successor->right = nodeRight;
+        nodeRight->parent = successor;
+    } else {
+        node->parent = successor;
+        successor->right = node;
+    }
+
     return node;
 }
 
