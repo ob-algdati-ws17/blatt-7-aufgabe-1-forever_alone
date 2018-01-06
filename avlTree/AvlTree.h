@@ -16,7 +16,6 @@ private:
         Node *left = nullptr;
         Node *right = nullptr;
         Node *parent = nullptr;
-        Node(const int);
         Node(const int, Node * parent);
         ~Node();
         vector<int> *preorder() const;  // (Hauptreihenfolge)
@@ -33,7 +32,6 @@ private:
     void doRemoveLeaf(Node *);
     void doRemoveNodeWithLeftChild(Node *);
     void doRemoveNodeWithRightChild(Node *);
-    void doRemoveNodeWithTwoChildren(Node *);
     void upout(Node*);
     Node* swap(Node*);
 

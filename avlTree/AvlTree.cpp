@@ -7,16 +7,12 @@
 
 using namespace std;
 
-AvlTree::Node::Node(const int k): key(k), balance(0), left(nullptr), right(nullptr), parent(nullptr)  {
-    cout << "Added node: " << key <<endl;
-}
-
 AvlTree::Node::Node(const int k, Node *parentN): key(k), balance(0), left(nullptr), right(nullptr), parent(parentN)  {
-    cout << "Added node: " << key <<endl;
+    //cout << "Added node: " << key <<endl;
 }
 
 AvlTree::Node::~Node() {
-    cout << "Deleted node: " << key << endl;
+    //cout << "Deleted node: " << key << endl;
     delete left;
     delete right;
 }
@@ -31,7 +27,7 @@ AvlTree::~AvlTree() {
 
 bool AvlTree::search(const int key) const {
     if (root == nullptr){
-        cout << "Tree is empty" << endl;
+        //cout << "Tree is empty" << endl;
         return false;
     } else {
         return (doSearch(root,key) != nullptr);
@@ -56,17 +52,16 @@ AvlTree::Node* AvlTree::doSearch(Node * node, const int key) const {
 
 bool AvlTree::insert(const int key) {
     if(root == nullptr){
-        root = new Node(key);
+        root = new Node(key, nullptr);
         return true;
     } else {
         return doInsert(root, key);
     }
-
 }
 
 bool AvlTree::doInsert(Node * node, const int key) {
     if(node->key == key){
-        cout << "Key " << key << " exist." << endl;
+//        cout << "Key " << key << " exist." << endl;
         return false;
     }
 
@@ -198,22 +193,19 @@ void AvlTree::rotateLeft(Node *node) {
 bool AvlTree::remove(const int key) {
     Node *node = doSearch(root, key);
     if(node == nullptr){
-        cout << "Key " << key << " do not exist." << endl;
+//        cout << "Key " << key << " do not exist." << endl;
         return false;
     }
-    // 0. case -> I am the lonely root...
-    if( !node->parent && !node->left && !node->right ){
-        delete(node);
-        root = nullptr;
-    } else {
-        doRemove(node);
-    }
+    doRemove(node);
     return true;
 }
 
-
 void AvlTree::doRemove(Node *node) {
-    if(!node->left && !node->right){
+    if( !node->parent && !node->left && !node->right ){
+        // 0. case -> I am the lonely root...
+        delete(node);
+        root = nullptr;
+    } else if(!node->left && !node->right){
         // 1. case -> node is leaf
         doRemoveLeaf(node);
     } else if(!node->left){
@@ -298,14 +290,9 @@ void AvlTree::doRemoveNodeWithRightChild(Node *node) {
     delete node;
 }
 
-void AvlTree::doRemoveNodeWithTwoChildren(Node *) {
-    //TODO
-}
-
-
 void AvlTree::upout(Node *node) {
     Node *parent = node->parent;
-    if(parent == nullptr){
+    if(!parent){
         node->balance = BALANCE_0;
         return;
     }
@@ -356,7 +343,7 @@ void AvlTree::upout(Node *node) {
 
 AvlTree::Node* AvlTree::swap(Node* node){ // TODO possible change - swap only key, not node
     Node* successor = node->right;
-    while (successor->left != nullptr){
+    while (successor->left){
         successor = successor->left;
     }
     Node* successorParent = successor->parent;
