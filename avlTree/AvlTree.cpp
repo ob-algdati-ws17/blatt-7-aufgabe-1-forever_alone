@@ -216,15 +216,15 @@ void AvlTree::doRemove(Node *node) {
     if(!node->left && !node->right){
         // 1. case -> node is leaf
         doRemoveLeaf(node);
-    } else if(node->right){
+    } else if(!node->left){
         // 2. case -> node has only right child
         doRemoveNodeWithRightChild(node);
-    } else if (node->left){
+    } else if (!node->right){
         // 3. case -> node has only left child
         doRemoveNodeWithLeftChild(node);
     } else {
         // 4. case -> node has two children
-        delete swap(node);
+        doRemove(swap(node));
     }
 }
 
@@ -354,47 +354,44 @@ void AvlTree::upout(Node *node) {
 }
 
 
-AvlTree::Node* AvlTree::swap(Node* node){
-    auto successor = node->right;
+AvlTree::Node* AvlTree::swap(Node* node){ // TODO possible change - swap only key, not node
+    Node* successor = node->right;
     while (successor->left != nullptr){
         successor = successor->left;
     }
-    int tmpBalance = successor->balance;
+    Node* successorParent = successor->parent;
+    Node* nodeRight = node->right;
+
+    // swap balance
+    int successorBalance = successor->balance;
     successor->balance = node->balance;
-    node->balance = tmpBalance;
-
-    auto nodeParent = node->parent;
-    auto successorParent = successor->parent;
-    auto nodeRight = node->right;
-
-    if(nodeParent){
-        if(nodeParent->left == node){
-            nodeParent->left = successor;
+    node->balance = successorBalance;
+    // swap parent
+    if(node->parent){ // is node root?
+        if(node->parent->left == node){
+            node->parent->left = successor;
         } else {
-            nodeParent->right = successor;
+            node->parent->right = successor;
         }
-        successor->parent = nodeParent;
+        successor->parent = node->parent;
     } else {
         root = successor;
-        // TODO successor = nullptr;
     }
 
+    //swap children
     successor->left = node->left;
     successor->left->parent = successor;
-
     node->right = successor->right;
     node->left = nullptr;
     if(successorParent != node){
-        node->parent = successorParent;
         successorParent->left = node;
-
         successor->right = nodeRight;
+        node->parent = successorParent;
         nodeRight->parent = successor;
     } else {
         node->parent = successor;
         successor->right = node;
     }
-
     return node;
 }
 

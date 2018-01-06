@@ -161,6 +161,47 @@ TEST(AvlTreeTest, RotateLeftRigth_6_Nodes) {
     EXPECT_TRUE(b.search(3));
 }
 
+TEST(AvlTreeTest, Remove_Root__Three_Nodes) {
+    AvlTree b;
+    EXPECT_FALSE(b.search(3));
+    b.insert(3);
+    b.insert(2);
+    b.insert(5);
+    EXPECT_TRUE(b.search(3));
+    EXPECT_TRUE(b.search(2));
+    EXPECT_TRUE(b.search(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(3,2,5));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(2,3,5));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(2,5,3));
+
+    b.remove(3);
+    EXPECT_FALSE(b.search(3));
+    EXPECT_TRUE(b.search(2));
+    EXPECT_TRUE(b.search(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(5,2));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(2,5));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(2,5));
+}
+
+TEST(AvlTreeTest, Remove_Root__Eleven_Nodes) {
+    AvlTree b;
+    b.insert(40);
+    b.insert(20);
+    b.insert(60);
+    b.insert(10);
+    b.insert(30);
+    b.insert(70);
+    b.insert(35);
+    b.insert(58);
+    b.insert(75);
+    b.insert(68);
+    b.remove(40);
+    EXPECT_FALSE(b.search(40));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(58,20,10,30,35,68,60,70,75));
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(10,20,30,35,58,60,68,70,75));
+    EXPECT_THAT(*b.postorder(), testing::ElementsAre(10,35,30,20,60,75,70,68,58));
+}
+
 // remove leaf
 
 TEST(AvlTreeTest, Remove_Leaf___Rotate_Left) {
