@@ -429,3 +429,37 @@ TEST(AvlTreeTest, Remove_Node_With_Two_Children_3) {
     EXPECT_THAT(*b.inorder(), testing::ElementsAre(10,25,27,30,35,40,58,60,70,75));
     EXPECT_THAT(*b.postorder(), testing::ElementsAre(10,27,35,30,25,58,75,70,60,40));
 }
+
+TEST(AvlTreeTest, Insert_Search_Remove_20_Nodes){
+    AvlTree b;
+    b.insert(12);
+    while( ( b.postorder()->size()) != 20) {
+        b.insert(random()%20);
+    }
+    for(int i = 0; i < 20; i++) {
+        EXPECT_TRUE(b.search(i));
+    }
+    for(int i = 25; i > -5; i--) {
+        b.remove(i);
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+    EXPECT_EQ(nullptr, b.inorder());
+    EXPECT_EQ(nullptr, b.postorder());
+}
+
+TEST(AvlTreeTest, Insert_Search_Remove_50_Nodes){
+    AvlTree b;
+    b.insert(42);
+    while( ( b.postorder()->size()) != 50) {
+        b.insert(random()%50);
+    }
+    for(int i = 0; i < 50; i++) {
+        EXPECT_TRUE(b.search(i));
+    }
+    for(int i = 55; i > -5; i--) {
+        b.remove(i);
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+    EXPECT_EQ(nullptr, b.inorder());
+    EXPECT_EQ(nullptr, b.postorder());
+}
