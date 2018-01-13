@@ -1,4 +1,5 @@
 #include "testAvlTree.h"
+#include <ctime>
 
 using namespace std;
 
@@ -431,10 +432,11 @@ TEST(AvlTreeTest, Remove_Node_With_Two_Children_3) {
 }
 
 TEST(AvlTreeTest, Insert_Search_Remove_20_Nodes){
+    srand(time(NULL));
     AvlTree b;
     b.insert(12);
     while( ( b.postorder()->size()) != 20) {
-        b.insert(random()%20);
+        b.insert(rand()%20);
     }
     for(int i = 0; i < 20; i++) {
         EXPECT_TRUE(b.search(i));
@@ -447,19 +449,56 @@ TEST(AvlTreeTest, Insert_Search_Remove_20_Nodes){
     EXPECT_EQ(nullptr, b.postorder());
 }
 
+
 TEST(AvlTreeTest, Insert_Search_Remove_50_Nodes){
     AvlTree b;
     b.insert(42);
     while( ( b.postorder()->size()) != 50) {
-        b.insert(random()%50);
+        b.insert(rand()%50);
     }
     for(int i = 0; i < 50; i++) {
         EXPECT_TRUE(b.search(i));
     }
-    for(int i = 55; i > -5; i--) {
+    for(int i = -5; i < 55; i++) {
         b.remove(i);
     }
     EXPECT_EQ(nullptr, b.preorder());
     EXPECT_EQ(nullptr, b.inorder());
     EXPECT_EQ(nullptr, b.postorder());
 }
+
+
+TEST(AvlTreeTest, Insert_Search_Remove_100_Nodes){
+    AvlTree b;
+    b.insert(42);
+    while( ( b.postorder()->size()) != 100) {
+        b.insert(rand()%100);
+    }
+    for(int i = 0; i < 100; i++) {
+        EXPECT_TRUE(b.search(i));
+    }
+    for(int i = 111; i > -11; i--) {
+        b.remove(i);
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+    EXPECT_EQ(nullptr, b.inorder());
+    EXPECT_EQ(nullptr, b.postorder());
+}
+
+TEST(AvlTreeTest, Insert_Search_Remove_500_Nodes){
+    AvlTree b;
+    b.insert(42);
+    while( ( b.postorder()->size()) != 500) {
+        b.insert(rand()%500);
+    }
+    for(int i = 0; i < 500; i++) {
+        EXPECT_TRUE(b.search(i));
+    }
+    for(int i = 0; i < 500; i++) {
+        b.remove(i);
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+    EXPECT_EQ(nullptr, b.inorder());
+    EXPECT_EQ(nullptr, b.postorder());
+}
+
