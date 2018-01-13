@@ -39,12 +39,29 @@ private:
 
     void rotateRight(Node*);
     void rotateLeft(Node*);
+    void setBalance(Node*);
+    int getHeight(Node*);
 public:
     ~AvlTree();
 
     bool search(const int) const;
     bool insert(const int);
     bool remove(const int);
+
+    void preOrderPrint()
+    {
+        preOrderPrint(root);
+
+    }
+    void preOrderPrint(struct Node *root)
+    {
+        if(root != NULL)
+        {
+            printf("%d ", root->key);
+            preOrderPrint(root->left);
+            preOrderPrint(root->right);
+        }
+    }
 
     vector<int> *preorder() const;  // (Hauptreihenfolge)
     vector<int> *inorder() const;   // (Symmetrische Reihenfolge)

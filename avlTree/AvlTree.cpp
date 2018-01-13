@@ -151,15 +151,33 @@ void AvlTree::rotateRight(Node *node) {
         parent->left = leftChild;
     }
 
-    leftChild->balance = BALANCE_0;
     leftChild->parent = parent;
     leftChild->right = node;
-
-    node->balance = BALANCE_0;
+    if(leftChild->balance == BALANCE_MINUS_1){
+        leftChild->balance = BALANCE_0;
+    } else if(leftChild->balance == BALANCE_0){
+        leftChild->balance = BALANCE_PLUS_1;
+    }
     node->left = leftRightChild;
     node->parent = leftChild;
-    if(leftRightChild)
+
+    if(leftRightChild){
         leftRightChild->parent = node;
+    }
+
+    if(node->balance == BALANCE_MINUS_1){
+        if(!leftRightChild){
+            node->balance = BALANCE_0;
+        }
+    } else if(node->balance == BALANCE_0){
+        if(leftRightChild){
+            node->balance = BALANCE_MINUS_1;
+        }
+    } else {
+        node->balance = BALANCE_MINUS_1;
+    }
+    setBalance(node);
+    setBalance(leftChild);
 }
 
 void AvlTree::rotateLeft(Node *node) {
@@ -175,15 +193,55 @@ void AvlTree::rotateLeft(Node *node) {
         parent->left = rightChild;
     }
 
-    rightChild->balance = BALANCE_0;
     rightChild->parent = parent;
     rightChild->left = node;
-
-    node->balance = BALANCE_0;
+    if(rightChild->balance == BALANCE_PLUS_1){
+        rightChild->balance = BALANCE_0;
+    } else if(rightChild->balance == BALANCE_0){
+        rightChild->balance = BALANCE_MINUS_1;
+    }
     node->right = rightLeftChild;
     node->parent = rightChild;
-    if(rightLeftChild)
+
+    if(rightLeftChild){
         rightLeftChild->parent = node;
+    }
+    if(node->balance == BALANCE_PLUS_1){
+        if(!rightLeftChild){
+            node->balance = BALANCE_0;
+        }
+    } else if(node->balance == BALANCE_0){
+        if(rightLeftChild){
+            node->balance = BALANCE_PLUS_1;
+        }
+    } else {
+            node->balance = BALANCE_PLUS_1;
+    }
+
+    setBalance(node);
+    setBalance(rightChild);
+}
+
+void AvlTree::setBalance(Node* node) {
+    if(!node)  return;
+
+    if (!node->left && !node->right)        node->balance = BALANCE_0;
+    else if (node->left && node->right){
+        int heightLeft = getHeight(node->left);
+        int heightRight = getHeight(node->right);
+
+        if(heightLeft > heightRight)        node->balance = BALANCE_MINUS_1;
+        else if(heightLeft < heightRight)   node->balance = BALANCE_PLUS_1;
+        else                                node->balance = BALANCE_0;
+    }
+    else if (!node->left)                   node->balance = BALANCE_PLUS_1;
+    else                                    node->balance = BALANCE_MINUS_1;
+}
+
+int AvlTree::getHeight(Node * node) {
+    if(node== nullptr)                          return 0;
+    if(!node->left && !node->right)             return 1;
+    if(node->left || node->right)               return 2;
 }
 
 /********************************************************************
