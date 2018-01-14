@@ -667,7 +667,6 @@ TEST(AvlTreeTest, Remove_Node_With_Two_Children_3) {
     EXPECT_THAT(*b.postorder(), testing::ElementsAre(10,27,35,30,25,58,75,70,60,40));
 }
 
-/*
 TEST(AvlTreeTest, Insert_Search_Remove_20_Nodes){
     srand(time(NULL));
     AvlTree b;
@@ -738,5 +737,3 @@ TEST(AvlTreeTest, Insert_Search_Remove_500_Nodes){
     EXPECT_EQ(nullptr, b.inorder());
     EXPECT_EQ(nullptr, b.postorder());
 }
-
-*/

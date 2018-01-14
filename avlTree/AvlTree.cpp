@@ -187,6 +187,8 @@ void AvlTree::rotateRight(Node *node) {
     }
     setBalance(node);
     setBalance(leftChild);
+
+
 }
 
 void AvlTree::rotateLeft(Node *node) {
@@ -229,6 +231,7 @@ void AvlTree::rotateLeft(Node *node) {
 
     setBalance(node);
     setBalance(rightChild);
+
 }
 
 void AvlTree::setBalance(Node* node) {
@@ -250,7 +253,7 @@ void AvlTree::setBalance(Node* node) {
 int AvlTree::getHeight(Node * node) {
     if(node== nullptr)                          return 0;
     if(!node->left && !node->right)             return 1;
-    if(node->left || node->right)               return 2;
+    return 1 + max(getHeight(node->left), getHeight(node->right));
 }
 
 /********************************************************************
