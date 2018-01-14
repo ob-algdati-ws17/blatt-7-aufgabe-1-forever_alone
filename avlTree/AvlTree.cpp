@@ -224,7 +224,7 @@ void AvlTree::rotateLeft(Node *node) {
             node->balance = BALANCE_PLUS_1;
         }
     } else {
-            node->balance = BALANCE_PLUS_1;
+        node->balance = BALANCE_PLUS_1;
     }
 
     setBalance(node);
@@ -297,12 +297,18 @@ void AvlTree::doRemoveLeaf(Node *node) {
         } else if(parent->balance == BALANCE_0){
             parent->balance = BALANCE_PLUS_1;
         } else { //BALANCE_PLUS_1
-            if(parent->right->balance == BALANCE_PLUS_1) {
+            Node* parentRight = parent->right;
+            if(parentRight->balance == BALANCE_PLUS_1) {
                 rotateLeft(parent);
+                if(parentRight->balance == 0)
+                    upout(parentRight);
             } else {
                 rotateRight(parent->right);
                 rotateLeft(parent);
+                if(parent->parent->balance == 0)
+                    upout(parent->parent);
             }
+
         }
     } else {                    // node is right child
         parent->right = nullptr;
@@ -312,12 +318,19 @@ void AvlTree::doRemoveLeaf(Node *node) {
         } else if(parent->balance == BALANCE_0){
             parent->balance = BALANCE_MINUS_1;
         } else { //BALANCE_MINUS_1
-            if(parent->left->balance == BALANCE_MINUS_1){
+
+            Node* parentLeft = parent->left;
+            if(parentLeft->balance == BALANCE_MINUS_1){
                 rotateRight(parent);
+                if(parentLeft->balance == 0)
+                    upout(parentLeft);
             } else{
                 rotateLeft(parent->left);
                 rotateRight(parent);
+                if(parent->parent->balance == 0)
+                    upout(parent->parent);
             }
+
         }
     }
     delete node;
@@ -331,10 +344,10 @@ void AvlTree::doRemoveNodeWithLeftChild(Node *node) {
         root = node->left;
     } else if(parent->left == node){
         parent->left = node->left;
-        upout(parent->right);
+        upout(parent->left);
     } else {
         parent->right = node->left;
-        upout(parent->left);
+        upout(parent->right);
     }
     node->left = node->right = nullptr;
     delete node;
@@ -348,16 +361,19 @@ void AvlTree::doRemoveNodeWithRightChild(Node *node) {
         root = node->right;
     } else if(parent->left == node){
         parent->left = node->right;
-        upout(parent->right);
+        upout(parent->left);
     } else {
         parent->right = node->right;
-        upout(parent->left);
+        upout(parent->right);
     }
     node->left = node->right = nullptr;
     delete node;
 }
 
 void AvlTree::upout(Node *node) {
+    if(!node){
+        return;
+    }
     Node *parent = node->parent;
     if(!parent){
         node->balance = BALANCE_0;
@@ -365,32 +381,12 @@ void AvlTree::upout(Node *node) {
     }
 
     if(parent->right == node){ // node is right child
-        if(parent->balance == BALANCE_MINUS_1){
-            parent->balance = BALANCE_0;
-            upout(parent);
-        } else if(parent->balance == BALANCE_0){
-            parent->balance = BALANCE_PLUS_1;
-        } else { // if(parent->balance == BALANCE_PLUS_1) //BALANCE_PLUS_1
-
-            Node* rightChild = parent->right;
-            if(rightChild->balance == BALANCE_0){
-                rotateLeft(parent);
-            } else if(rightChild->balance == BALANCE_PLUS_1){
-                rotateLeft(parent);
-                upout(rightChild);
-            } else { // rightChild->balance == BALANCE_MINUS_1
-                rotateRight(rightChild);
-                rotateLeft(parent);
-                upout(rightChild->parent);
-            }
-        }
-    } else { // node is left child
         if(parent->balance == BALANCE_PLUS_1){
             parent->balance = BALANCE_0;
             upout(parent);
         } else if(parent->balance == BALANCE_0){
             parent->balance = BALANCE_MINUS_1;
-        } else { // if(parent->balance == BALANCE_MINUS_1) //BALANCE_MINUS_1
+        } else { //BALANCE_MINUS_1
 
             Node* leftChild = parent->left;
             if(leftChild->balance == BALANCE_0){
@@ -402,6 +398,26 @@ void AvlTree::upout(Node *node) {
                 rotateLeft(leftChild);
                 rotateRight(parent);
                 upout(leftChild->parent);
+            }
+        }
+    } else { // node is left child
+        if(parent->balance == BALANCE_MINUS_1){
+            parent->balance = BALANCE_0;
+            upout(parent);
+        } else if(parent->balance == BALANCE_0){
+            parent->balance = BALANCE_PLUS_1;
+        } else { //BALANCE_PLUS_1
+
+            Node* rightChild = parent->right;
+            if(rightChild->balance == BALANCE_0){
+                rotateLeft(parent);
+            } else if(rightChild->balance == BALANCE_PLUS_1){
+                rotateLeft(parent);
+                upout(rightChild);
+            } else { // rightChild->balance == BALANCE_MINUS_1
+                rotateRight(rightChild);
+                rotateLeft(parent);
+                upout(rightChild->parent);
             }
         }
     }
