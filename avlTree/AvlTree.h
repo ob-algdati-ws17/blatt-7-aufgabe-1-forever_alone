@@ -44,24 +44,10 @@ private:
 public:
     ~AvlTree();
 
+    int getBalance(const int) const;
     bool search(const int) const;
     bool insert(const int);
     bool remove(const int);
-
-    void preOrderPrint()
-    {
-        preOrderPrint(root);
-
-    }
-    void preOrderPrint(struct Node *root)
-    {
-        if(root != NULL)
-        {
-            printf("%d ", root->key);
-            preOrderPrint(root->left);
-            preOrderPrint(root->right);
-        }
-    }
 
     vector<int> *preorder() const;  // (Hauptreihenfolge)
     vector<int> *inorder() const;   // (Symmetrische Reihenfolge)

@@ -12,7 +12,7 @@ AvlTree::Node::Node(const int k, Node *parentN): key(k), balance(0), left(nullpt
 }
 
 AvlTree::Node::~Node() {
-    //cout << "Deleted node: " << key << endl;
+    cout << "Deleted node: " << key << endl;
     delete left;
     delete right;
 }
@@ -132,6 +132,15 @@ void AvlTree::upin(Node *node) {
             }
         }
     }
+}
+
+int AvlTree::getBalance(const int key) const {
+    Node* node = doSearch(root,key);
+    if (!node){
+        cout << "Key " << key << "not exist";
+        return -99; // Not found
+    }
+    return node->balance;
 }
 
 /********************************************************************
