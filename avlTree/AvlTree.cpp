@@ -410,6 +410,7 @@ AvlTree::Node* AvlTree::swap(Node* node){ // TODO possible change - swap only ke
         successor->parent = node->parent;
     } else {
         root = successor;
+        root->parent = nullptr;
     }
 
     //swap children
