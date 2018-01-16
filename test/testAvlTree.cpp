@@ -737,3 +737,190 @@ TEST(AvlTreeTest, Insert_Search_Remove_500_Nodes){
     EXPECT_EQ(nullptr, b.inorder());
     EXPECT_EQ(nullptr, b.postorder());
 }
+
+
+TEST(AvlTreeTest, Insert_Remove_10_Nodes) {
+    AvlTree b;
+    b.insert(6);
+    b.insert(2);
+    b.insert(8);
+    b.insert(1);
+    b.insert(4);
+    b.insert(7);
+    b.insert(9);
+    b.insert(0);
+    b.insert(3);
+    b.insert(5);
+    EXPECT_EQ(-1, b.getBalance(6));
+    EXPECT_EQ(0, b.getBalance(2));
+    EXPECT_EQ(0, b.getBalance(8));
+    EXPECT_EQ(-1, b.getBalance(1));
+    EXPECT_EQ(0, b.getBalance(4));
+    EXPECT_EQ(0, b.getBalance(7));
+    EXPECT_EQ(0, b.getBalance(9));
+    EXPECT_EQ(0, b.getBalance(0));
+    EXPECT_EQ(0, b.getBalance(3));
+    EXPECT_EQ(0, b.getBalance(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(6,2,1,0,4,3,5,8,7,9));
+    b.remove(0);
+    EXPECT_EQ(-1, b.getBalance(6));
+    EXPECT_EQ(1, b.getBalance(2));
+    EXPECT_EQ(0, b.getBalance(8));
+    EXPECT_EQ(0, b.getBalance(1));
+    EXPECT_EQ(0, b.getBalance(4));
+    EXPECT_EQ(0, b.getBalance(7));
+    EXPECT_EQ(0, b.getBalance(9));
+    EXPECT_EQ(0, b.getBalance(3));
+    EXPECT_EQ(0, b.getBalance(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(6,2,1,4,3,5,8,7,9));
+    b.remove(2);
+    EXPECT_EQ(-1, b.getBalance(6));
+    EXPECT_EQ(0, b.getBalance(8));
+    EXPECT_EQ(0, b.getBalance(1));
+    EXPECT_EQ(1, b.getBalance(4));
+    EXPECT_EQ(0, b.getBalance(7));
+    EXPECT_EQ(0, b.getBalance(9));
+    EXPECT_EQ(1, b.getBalance(3));
+    EXPECT_EQ(0, b.getBalance(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(6,3,1,4,5,8,7,9));
+    b.remove(4);
+    EXPECT_EQ(0, b.getBalance(6));
+    EXPECT_EQ(0, b.getBalance(8));
+    EXPECT_EQ(0, b.getBalance(1));
+    EXPECT_EQ(0, b.getBalance(7));
+    EXPECT_EQ(0, b.getBalance(9));
+    EXPECT_EQ(0, b.getBalance(3));
+    EXPECT_EQ(0, b.getBalance(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(6,3,1,5,8,7,9));
+    b.remove(9);
+    EXPECT_EQ(0, b.getBalance(6));
+    EXPECT_EQ(-1, b.getBalance(8));
+    EXPECT_EQ(0, b.getBalance(1));
+    EXPECT_EQ(0, b.getBalance(7));
+    EXPECT_EQ(0, b.getBalance(3));
+    EXPECT_EQ(0, b.getBalance(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(6,3,1,5,8,7));
+    b.remove(3);
+    EXPECT_EQ(0, b.getBalance(6));
+    EXPECT_EQ(-1, b.getBalance(8));
+    EXPECT_EQ(0, b.getBalance(1));
+    EXPECT_EQ(0, b.getBalance(7));
+    EXPECT_EQ(-1, b.getBalance(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(6,5,1,8,7));
+    b.remove(6);
+    EXPECT_EQ(0, b.getBalance(8));
+    EXPECT_EQ(0, b.getBalance(1));
+    EXPECT_EQ(-1, b.getBalance(7));
+    EXPECT_EQ(-1, b.getBalance(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(7,5,1,8));
+    b.remove(8);
+    EXPECT_EQ(0, b.getBalance(1));
+    EXPECT_EQ(0, b.getBalance(7));
+    EXPECT_EQ(0, b.getBalance(5));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(5,1,7));
+    b.remove(5);
+    EXPECT_EQ(0, b.getBalance(1));
+    EXPECT_EQ(-1, b.getBalance(7));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(7,1));
+    b.remove(1);
+    EXPECT_EQ(0, b.getBalance(7));
+    EXPECT_THAT(*b.preorder(), testing::ElementsAre(7));
+    b.remove(7);
+    EXPECT_EQ(-99, b.getBalance(7));
+}
+
+TEST(AvlTreeTest, Random_Insert_Random_Remove_10_Nodes){
+    AvlTree b;
+    b.insert(2);
+    while( ( b.postorder()->size()) != 10) {
+        b.insert(rand()%10);
+    }
+    for(int i = 0; i < 10; i++) {
+        EXPECT_TRUE(b.search(i));
+    }
+    int size = 10;
+    while(size!=0) {
+        if(b.remove(rand()%10)){
+            size--;
+        }
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+}
+
+
+TEST(AvlTreeTest, Random_Insert_Random_Remove_50_Nodes){
+    AvlTree b;
+    b.insert(42);
+    while( ( b.postorder()->size()) != 50) {
+        b.insert(rand()%50);
+    }
+    int size = 50;
+    while(size!=0) {
+        if(b.remove(rand()%50)){
+            size--;
+        }
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+}
+
+TEST(AvlTreeTest, Random_Insert_Random_Remove_100_Nodes){
+    AvlTree b;
+    b.insert(42);
+    while( ( b.postorder()->size()) != 100) {
+        b.insert(rand()%100);
+    }
+    int size = 100;
+    while(size!=0) {
+        if(b.remove(rand()%100)){
+            size--;
+        }
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+}
+
+TEST(AvlTreeTest, Random_Insert_Random_Remove_500_Nodes){
+    AvlTree b;
+    b.insert(42);
+    while( ( b.postorder()->size()) != 500) {
+        b.insert(rand()%500);
+    }
+    int size = 500;
+    while(size!=0) {
+        if(b.remove(rand()%500)){
+            size--;
+        }
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+}
+
+TEST(AvlTreeTest, Random_Insert_Random_Remove_1000_Nodes){
+    AvlTree b;
+    b.insert(42);
+    while( ( b.postorder()->size()) != 1000) {
+        b.insert(rand()%1000);
+    }
+    int size = 1000;
+    while(size!=0) {
+        if(b.remove(rand()%1000)){
+            size--;
+        }
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+}
+
+/*
+TEST(AvlTreeTest, Random_Insert_Random_Remove_10000_Nodes){
+    AvlTree b;
+    b.insert(42);
+    while( ( b.postorder()->size()) != 10000) {
+        b.insert(rand()%10000);
+    }
+    int size = 10000;
+    while(size!=0) {
+        if(b.remove(rand()%10000)){
+            size--;
+        }
+    }
+    EXPECT_EQ(nullptr, b.preorder());
+}
+*/
